@@ -40,4 +40,12 @@ RUN npm run build
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # 12. Buka port 80 untuk web server
+# ... (kode atasnya dari langkah 1-11 tetap sama) ...
 EXPOSE 80
+
+# 13. Buat file SQLite dan atur hak aksesnya agar bisa ditulis oleh Laravel
+RUN touch /var/www/html/database/database.sqlite
+RUN chown -R www-data:www-data /var/www/html/database
+
+# 14. Jalankan migrasi otomatis dan nyalakan server saat aplikasi di-deploy
+CMD php artisan migrate --force && apache2-foreground
